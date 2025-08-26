@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.34, y: -0.08, z: 0}
-  m_LocalScale: {x: 11.09217, y: 11.09217, z: 11.09217}
+  m_LocalScale: {x: 11, y: 11, z: 11}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoUp: 119
   GoDown: 115
-  playerRigidBody2D: {fileID: 3628012507425584140}
+  playerRigidbody2D: {fileID: 0}
   speed: 2000
   size: 1
   color: {r: 0, g: 0, b: 0, a: 0}

@@ -13,7 +13,11 @@ public class Panels : MonoBehaviour
     [SerializeField] private GameObject player1;
     [SerializeField] private GameObject player2;
     private PlayerMovement player1Speed;
+    [SerializeField] private Transform player1Size;
+    //private Color player1Color;
     private PlayerMovement player2Speed;
+    [SerializeField] private Transform player2Size;
+    //private Color player2Color;
 
     [Header("Player 1 settings")]
     [SerializeField] private Slider sliderPlayer1Speed;
@@ -36,20 +40,23 @@ public class Panels : MonoBehaviour
     [SerializeField] private Button btnBackOptions;
 
     [Header("Text Settings")]
-    [SerializeField] private TextMeshPro textSpeedPlayer1;
-    [SerializeField] private TextMeshPro textSizePlayer1;
-    [SerializeField] private TextMeshPro textColorPlayer1;
-    [SerializeField] private TextMeshPro textSpeedPlayer2;
-    [SerializeField] private TextMeshPro textSizePlayer2;
-    [SerializeField] private TextMeshPro textColorPlayer2;
-
+    [SerializeField] private TextMeshProUGUI textSpeedPlayer1;
+    [SerializeField] private TextMeshProUGUI textSizePlayer1;
+    //[SerializeField] private TextMeshProUGUI textColorPlayer1;
+    [SerializeField] private TextMeshProUGUI textSpeedPlayer2;
+    [SerializeField] private TextMeshProUGUI textSizePlayer2;
+    //[SerializeField] private TextMeshProUGUI textColorPlayer2;
+    
     private bool isPause = false;
     private bool isOptions = false;
 
     private void Awake()
     {
         player1Speed = player1.GetComponent<PlayerMovement>();
+        player1Size = player1.GetComponent<Transform>();
+
         player2Speed = player2.GetComponent<PlayerMovement>();
+        player2Size = player2.GetComponent<Transform>();
 
         btnPlay.onClick.AddListener(Resume);
         btnOptions.onClick.AddListener(OnOptionsClicked);
@@ -75,6 +82,7 @@ public class Panels : MonoBehaviour
         }
 
         ChangeSpeed();
+        ChangeSize();
 
 
     }
@@ -130,17 +138,34 @@ public class Panels : MonoBehaviour
         sliderPlayer1Speed.onValueChanged.AddListener((speed) =>
         {
             player1Speed.speed = speed;
-            textSpeedPlayer1.text = speed.ToString("0.00");
+            textSpeedPlayer1.text = speed.ToString("0");
 
         });
 
         sliderPlayer2Speed.onValueChanged.AddListener((speed) =>
         {
             player2Speed.speed = speed;
-            textSpeedPlayer2.text = speed.ToString("0.00");
+            textSpeedPlayer2.text = speed.ToString("0");
 
         });
 
+    }
+
+    public void ChangeSize()
+    {
+        sliderPlayer1Size.onValueChanged.AddListener((size) =>
+        {
+            player1Size.transform.localScale = new Vector3(11, size, 11);
+            textSizePlayer1.text = size.ToString("0");
+
+        });
+
+        sliderPlayer2Size.onValueChanged.AddListener((size) =>
+        {
+            player2Size.transform.localScale = new Vector3(11, size, 11);
+            textSizePlayer2.text = size.ToString("0");
+
+        });
     }
 
 }
