@@ -151,7 +151,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.07, y: 0.3}
+  m_Size: {x: 0.05, y: 0.3}
   m_Direction: 0
 --- !u!114 &6875763986629462652
 MonoBehaviour:
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoUp: 119
   GoDown: 115
-  playerRigidbody2D: {fileID: 0}
+  playerRigidbody2D: {fileID: 3628012507425584140}
   speed: 2000
-  size: 1
+  size: {x: 0, y: 0, z: 0}
   color: {r: 0, g: 0, b: 0, a: 0}

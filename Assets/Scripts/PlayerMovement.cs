@@ -13,12 +13,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Player statistics")]
     public float speed = 10f;
-    public int size = 1;
+    public Vector3 size;
     public Color color;
 
     private void Awake()
     {
         playerRigidbody2D = GetComponent<Rigidbody2D>();
+
+        size = transform.localScale;
     }
 
     private void FixedUpdate()
