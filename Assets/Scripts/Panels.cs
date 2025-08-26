@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+#if USINGEDITOR
+using UnityEditor;
+#endif
 
 public class Panels : MonoBehaviour
 {
@@ -26,15 +28,12 @@ public class Panels : MonoBehaviour
     [Header("Panel Settings")]
     [SerializeField] private GameObject panelPause;
     [SerializeField] private GameObject panelOptions;
-    [SerializeField] private GameObject panelCredits;
 
     [Header("Button Settings")]
     [SerializeField] private Button btnPlay;
     [SerializeField] private Button btnOptions;
-    [SerializeField] private Button btnCredits;
-    [SerializeField] private Button btnExit;
+    [SerializeField] private Button btnMainMenu;
     [SerializeField] private Button btnBackOptions;
-    [SerializeField] private Button btnBackCredits;
 
     [Header("Text Settings")]
     [SerializeField] private TextMeshPro textSpeedPlayer1;
@@ -46,7 +45,6 @@ public class Panels : MonoBehaviour
 
     private bool isPause = false;
     private bool isOptions = false;
-    private bool isCredits = false;
 
     private void Awake()
     {
@@ -55,24 +53,21 @@ public class Panels : MonoBehaviour
 
         btnPlay.onClick.AddListener(Resume);
         btnOptions.onClick.AddListener(OnOptionsClicked);
-        btnCredits.onClick.AddListener(OnCreditsClicked);
-        btnExit.onClick.AddListener(OnExitClicked);
+        btnMainMenu.onClick.AddListener(OnMainMenuClicked);
         btnBackOptions.onClick.AddListener(OnBackOptionsClicked);
-        btnBackCredits.onClick.AddListener(OnBackCreditsClicked);
-
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPause == false && isOptions == false && isCredits == false)
+            if (isPause == false && isOptions == false)
             {
                 Pause();
             }
             else
             {
-                if (isOptions == false && isCredits == false)
+                if (isOptions == false)
                 {
                     Resume();
                 }
@@ -88,12 +83,8 @@ public class Panels : MonoBehaviour
     {
         btnPlay.onClick.RemoveAllListeners();
         btnOptions.onClick.RemoveAllListeners();
-        btnCredits.onClick.RemoveAllListeners();
-        btnExit.onClick.RemoveAllListeners();
+        btnMainMenu.onClick.RemoveAllListeners();
         btnBackOptions.onClick.RemoveAllListeners();
-        btnBackCredits.onClick.RemoveAllListeners();
-
-
     }
 
     public void Pause()
@@ -108,6 +99,7 @@ public class Panels : MonoBehaviour
         Time.timeScale = 1;
         isPause = false;
         panelPause.SetActive(false);
+        panelOptions.SetActive(false);
     }
 
     public void OnOptionsClicked()
@@ -117,17 +109,13 @@ public class Panels : MonoBehaviour
         isOptions = true;
     }
 
-    public void OnCreditsClicked()
+    public void OnMainMenuClicked()
     {
-        panelPause.SetActive(false);
-        panelCredits.SetActive(true);
-        isOptions = false;
-    }
-
-    public void OnExitClicked()
-    {
+#if USINGEDITOR
         EditorApplication.ExitPlaymode();
+#else
         Application.Quit();
+#endif
     }
 
     public void OnBackOptionsClicked()
@@ -135,13 +123,6 @@ public class Panels : MonoBehaviour
         panelOptions.SetActive(false);
         panelPause.SetActive(true);
         isOptions = false;
-    }
-
-    public void OnBackCreditsClicked()
-    {
-        panelCredits.SetActive(false);
-        panelPause.SetActive(true);
-        isCredits = false;
     }
 
     public void ChangeSpeed()

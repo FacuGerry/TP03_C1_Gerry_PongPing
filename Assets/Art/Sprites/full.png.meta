@@ -3705,7 +3705,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_122
+      name: Handle
       rect:
         serializedVersion: 2
         x: 66
@@ -4188,7 +4188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_145
+      name: SLIDER
       rect:
         serializedVersion: 2
         x: 1057
@@ -8440,7 +8440,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Handle: 699812522856664527
       Player: 1883867802186087156
+      SLIDER: -5685361394268262943
       full_0: -4162122909835288923
       full_1: 7028379676450906074
       full_10: 5469438470169829125
@@ -8467,7 +8469,6 @@ TextureImporter:
       full_12: -6998844140798697261
       full_120: -8554460003454761394
       full_121: 5568322456683213152
-      full_122: 699812522856664527
       full_123: 5131388984907860896
       full_124: -2882016492280406127
       full_125: -5685132907494016722
@@ -8492,7 +8493,6 @@ TextureImporter:
       full_142: -6289646204778771461
       full_143: -7680325123638369668
       full_144: -2851660455549270924
-      full_145: -5685361394268262943
       full_146: -8376154263863699054
       full_147: -5496764952597251080
       full_148: -81605603748810991

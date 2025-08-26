@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private KeyCode GoUp = KeyCode.W;
     [SerializeField] private KeyCode GoDown = KeyCode.S;
 
-    [Header("")]
-    [SerializeField] private Rigidbody2D playerRigidBody2D;
+    [Header("Rigidbody")]
+    [SerializeField] private Rigidbody2D playerRigidbody2D;
 
     [Header("Player statistics")]
     public float speed = 10f;
@@ -18,18 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        playerRigidBody2D = GetComponent<Rigidbody2D>();
-
-    }
-
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -37,21 +26,16 @@ public class PlayerMovement : MonoBehaviour
         PlayerMove();
     }
 
-    private void OnDestroy()
-    {
-
-    }
-
     public void PlayerMove()
     {
         if (Input.GetKey(GoUp))
         {
-            Rigidbody2D rigidbody2D = playerRigidBody2D;
+            Rigidbody2D rigidbody2D = playerRigidbody2D;
             rigidbody2D.AddForce(speed * Time.fixedDeltaTime * Vector2.up);
         }
         if (Input.GetKey(GoDown))
         {
-            Rigidbody2D rigidbody2D = playerRigidBody2D;
+            Rigidbody2D rigidbody2D = playerRigidbody2D;
             rigidbody2D.AddForce(speed * Time.fixedDeltaTime * Vector2.down);
         }
 
