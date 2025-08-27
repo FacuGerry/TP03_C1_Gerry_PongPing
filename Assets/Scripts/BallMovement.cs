@@ -38,6 +38,9 @@ public class BallMovement : MonoBehaviour
     private Collider2D p1;
     private Collider2D p2;
 
+    private bool isTiming = false;
+    public float timer = 300f;
+
     private void Awake()
     {
         wallLeft = goalLeft.GetComponent<Collider2D>();
@@ -50,7 +53,7 @@ public class BallMovement : MonoBehaviour
 
     void Start()
     {
-        KickOff();
+        Timer();
     }
 
     private void Update()
@@ -72,12 +75,10 @@ public class BallMovement : MonoBehaviour
             if (Random.value < 0.5f)
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, Random.value);
-                Debug.Log("Saque a la DERECHA ARRIBA");
             }
             else
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, -Random.value);
-                Debug.Log("Saque a la DERECHA ABAJO");
             }
         }
         else
@@ -85,15 +86,12 @@ public class BallMovement : MonoBehaviour
             if (Random.value < 0.5f)
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, Random.value);
-                Debug.Log("Saque a la IZQUIERDA ARRIBA");
             }
             else
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, -Random.value);
-                Debug.Log("Saque a la IZQUIERDA ABAJO");
             }
         }
-
     }
 
     public void Collisions(Collision2D collision)
@@ -104,16 +102,14 @@ public class BallMovement : MonoBehaviour
         if (collision.collider == wallLeft)
         {
             ball.transform.position = Vector2.zero;
-            //Agregar una funcion para que espere 3 segundos y vuelva a sacar
             scorePlayer2++;
-            KickOff();
+            Timer();
         }
         if (collision.collider == wallRight)
         {
             ball.transform.position = Vector2.zero;
-            //Agregar una funcion para que espere 3 segundos y vuelva a sacar
             scorePlayer1++;
-            KickOff();
+            Timer();
         }
 
         if (collision.collider == rooftop)
@@ -189,7 +185,33 @@ public class BallMovement : MonoBehaviour
             {
                 winP2.SetActive(true);
             }
-            
+
+        }
+    }
+
+    public void Timer()
+    {
+        bool auxTimer = false;
+        while (auxTimer == false)
+        {
+            if (isTiming == true)
+            {
+                KickOff();
+                auxTimer = true;
+            }
+            else
+            {
+                if (timer <= 0.0f)
+                {
+                    isTiming = true;
+                }
+                else
+                {
+                    timer -= Time.deltaTime;
+                }
+
+
+            }
         }
     }
 
