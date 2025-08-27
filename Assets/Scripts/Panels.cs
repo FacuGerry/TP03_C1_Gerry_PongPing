@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-#if USINGEDITOR
-using UnityEditor;
-#endif
 
 public class Panels : MonoBehaviour
 {
@@ -42,13 +39,16 @@ public class Panels : MonoBehaviour
     [Header("Text Settings")]
     [SerializeField] private TextMeshProUGUI textSpeedPlayer1;
     [SerializeField] private TextMeshProUGUI textSizePlayer1;
-    //[SerializeField] private TextMeshProUGUI textColorPlayer1;
     [SerializeField] private TextMeshProUGUI textSpeedPlayer2;
     [SerializeField] private TextMeshProUGUI textSizePlayer2;
+
+    //Color
+    //[SerializeField] private TextMeshProUGUI textColorPlayer1;
     //[SerializeField] private TextMeshProUGUI textColorPlayer2;
     
     private bool isPause = false;
     private bool isOptions = false;
+    public string MainMenu;
 
     private void Awake()
     {
@@ -119,11 +119,7 @@ public class Panels : MonoBehaviour
 
     public void OnMainMenuClicked()
     {
-#if USINGEDITOR
-        EditorApplication.ExitPlaymode();
-#else
-        Application.Quit();
-#endif
+        SceneManager.LoadScene(MainMenu);
     }
 
     public void OnBackOptionsClicked()

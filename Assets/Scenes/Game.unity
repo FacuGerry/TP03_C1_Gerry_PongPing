@@ -432,7 +432,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: -8468045915109639830, guid: 113324909c3b09e489d11bc60918dd1a, type: 3}
+  m_Sprite: {fileID: -7692847438676168008, guid: 179771d9754676341a933a328caaf3c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1164,6 +1164,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
+--- !u!1 &474345755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3070178042518818692, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
+  m_PrefabInstance: {fileID: 571101258}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &476982138
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,6 +2286,7 @@ MonoBehaviour:
   textSizePlayer1: {fileID: 1235493211}
   textSpeedPlayer2: {fileID: 2034626151}
   textSizePlayer2: {fileID: 234773223}
+  MainMenu: MainMenu
 --- !u!1 &866570444
 GameObject:
   m_ObjectHideFlags: 0
@@ -3044,6 +3050,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1238228065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3070178042518818692, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
+  m_PrefabInstance: {fileID: 435537408}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1243128697
 GameObject:
   m_ObjectHideFlags: 0
@@ -3714,7 +3725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3070178042518818692, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
       propertyPath: m_Name
-      value: ScoreP2
+      value: ScorePanelP2
       objectReference: {fileID: 0}
     - target: {fileID: 5848149135588254624, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
       propertyPath: m_Pivot.x
@@ -3806,6 +3817,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5848149135588254624, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
   m_PrefabInstance: {fileID: 1454460395}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1454460397 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 91563922904947852, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
+  m_PrefabInstance: {fileID: 1454460395}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1477622445
 GameObject:
   m_ObjectHideFlags: 0
@@ -4356,7 +4378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1717713839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5219,7 +5241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3070178042518818692, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
       propertyPath: m_Name
-      value: ScoreP1
+      value: ScorePanelP1
       objectReference: {fileID: 0}
     - target: {fileID: 5848149135588254624, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
       propertyPath: m_Pivot.x
@@ -5311,6 +5333,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5848149135588254624, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
   m_PrefabInstance: {fileID: 2122880101}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2122880103 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 91563922904947852, guid: 5629f6bdf73bca9409df34569cb9df0b, type: 3}
+  m_PrefabInstance: {fileID: 2122880101}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2133728619 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8327373763078273155, guid: c8c707218fd08c149abb7155a93111cf, type: 3}
@@ -5360,6 +5393,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1477622445}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
+      propertyPath: winP1
+      value: 
+      objectReference: {fileID: 474345755}
+    - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
+      propertyPath: winP2
+      value: 
+      objectReference: {fileID: 1238228065}
+    - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: player1
       value: 
       objectReference: {fileID: 1855760350}
@@ -5391,6 +5432,14 @@ PrefabInstance:
       propertyPath: goalRight
       value: 
       objectReference: {fileID: 476982138}
+    - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
+      propertyPath: scoreWinP1
+      value: 
+      objectReference: {fileID: 2122880103}
+    - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
+      propertyPath: scoreWinP2
+      value: 
+      objectReference: {fileID: 1454460397}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: textScoreP1
       value: 

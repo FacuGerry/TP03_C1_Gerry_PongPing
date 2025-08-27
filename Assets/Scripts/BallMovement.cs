@@ -1,12 +1,5 @@
-using NUnit.Framework.Internal;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Security.Cryptography;
-using System.Xml;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class BallMovement : MonoBehaviour
 {
@@ -27,12 +20,16 @@ public class BallMovement : MonoBehaviour
 
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
-    [SerializeField] private TextMeshProUGUI textScoreP2;    
+    [SerializeField] private TextMeshProUGUI textScoreP2;
     public int maxScore = 10;
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
 
     [SerializeField] private GameObject panelWin;
+    [SerializeField] private TextMeshProUGUI scoreWinP1;
+    [SerializeField] private TextMeshProUGUI scoreWinP2;
+    [SerializeField] private GameObject winP1;
+    [SerializeField] private GameObject winP2;
 
     private Collider2D wallLeft;
     private Collider2D wallRight;
@@ -181,6 +178,18 @@ public class BallMovement : MonoBehaviour
         {
             Time.timeScale = 0;
             panelWin.SetActive(true);
+            scoreWinP1.text = scorePlayer1.ToString("0");
+            scoreWinP2.text = scorePlayer2.ToString("0");
+
+            if (scorePlayer1 >= 10)
+            {
+                winP1.SetActive(true);
+            }
+            else
+            {
+                winP2.SetActive(true);
+            }
+            
         }
     }
 
