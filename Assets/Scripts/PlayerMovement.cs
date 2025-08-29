@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -18,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        
+
         playerRigidbody2D = GetComponent<Rigidbody2D>();
 
         size = transform.localScale;

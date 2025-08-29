@@ -16,7 +16,7 @@ public class BallMovement : MonoBehaviour
     [Header("Ball")]
     [SerializeField] private Rigidbody2D ballRigidbody2D;
     [SerializeField] private GameObject ball;
-    public float ballSpeed = 10f;
+    public float ballSpeed = 400f;
 
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
@@ -103,12 +103,14 @@ public class BallMovement : MonoBehaviour
         {
             ball.transform.position = Vector2.zero;
             scorePlayer2++;
+            ballSpeed = 400f;
             Timer();
         }
         if (collision.collider == wallRight)
         {
             ball.transform.position = Vector2.zero;
             scorePlayer1++;
+            ballSpeed = 400f;
             Timer();
         }
 
@@ -141,10 +143,12 @@ public class BallMovement : MonoBehaviour
             if (rigidbody2D.velocity.y > 0)
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, 1);
+                ballSpeed += 10;
             }
             else
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, -1);
+                ballSpeed += 10;
             }
         }
 
@@ -153,13 +157,14 @@ public class BallMovement : MonoBehaviour
             if (rigidbody2D.velocity.y > 0)
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, 1);
+                ballSpeed += 10;
             }
             else
             {
                 rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, -1);
+                ballSpeed += 10;
             }
         }
-
     }
 
     public void WriteScore()
@@ -189,6 +194,7 @@ public class BallMovement : MonoBehaviour
         }
     }
 
+    //Consultar con el profe
     public void Timer()
     {
         bool auxTimer = false;
@@ -214,5 +220,6 @@ public class BallMovement : MonoBehaviour
             }
         }
     }
+
 
 }
