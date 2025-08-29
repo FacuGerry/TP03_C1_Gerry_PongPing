@@ -12,13 +12,8 @@ public class Panels : MonoBehaviour
     private PlayerMovement player2Speed;
     private Transform player2Size;
 
-    private Color player1ColorR;
-    private Color player1ColorG;
-    private Color player1ColorB;
-
-    private Color player2ColorR;
-    private Color player2ColorG;
-    private Color player2ColorB;
+    private SpriteRenderer player1Color;
+    private SpriteRenderer player2Color;
 
     [Header("Players")]
     [SerializeField] private GameObject player1;
@@ -49,38 +44,38 @@ public class Panels : MonoBehaviour
     [SerializeField] private Button btnBackOptions;
 
     [Header("Text Settings")]
+    [Header("Player 1")]
     [SerializeField] private TextMeshProUGUI textSpeedPlayer1;
     [SerializeField] private TextMeshProUGUI textSizePlayer1;
-
     [SerializeField] private TextMeshProUGUI textColorPlayer1R;
     [SerializeField] private TextMeshProUGUI textColorPlayer1G;
     [SerializeField] private TextMeshProUGUI textColorPlayer1B;
 
+    [Header("Player 2")]
     [SerializeField] private TextMeshProUGUI textSpeedPlayer2;
     [SerializeField] private TextMeshProUGUI textSizePlayer2;
-
     [SerializeField] private TextMeshProUGUI textColorPlayer2R;
     [SerializeField] private TextMeshProUGUI textColorPlayer2G;
     [SerializeField] private TextMeshProUGUI textColorPlayer2B;
 
-    private bool isPause = false;
-    private bool isOptions = false;
+    [Header("Extras")]
     public string MainMenu = "MainMenu";
     public string Game = "Game";
+
+    private bool isPause = false;
+    private bool isOptions = false;
+
+    float m_Red, m_Green, m_Blue;
 
     private void Awake()
     {
         player1Speed = player1.GetComponent<PlayerMovement>();
         player1Size = player1.GetComponent<Transform>();
-        player1ColorR = player1.GetComponent<SpriteRenderer>().color;
-        player1ColorG = player1.GetComponent<SpriteRenderer>().color;
-        player1ColorB = player1.GetComponent<SpriteRenderer>().color;
+        player1Color = player1.GetComponent<SpriteRenderer>();
 
         player2Speed = player2.GetComponent<PlayerMovement>();
         player2Size = player2.GetComponent<Transform>();
-        player2ColorR = player2.GetComponent<SpriteRenderer>().color;
-        player2ColorG = player2.GetComponent<SpriteRenderer>().color;
-        player2ColorB = player2.GetComponent<SpriteRenderer>().color;
+        player2Color = player2.GetComponent<SpriteRenderer>();
 
         btnPlay.onClick.AddListener(Resume);
         btnOptions.onClick.AddListener(OnOptionsClicked);
@@ -107,23 +102,26 @@ public class Panels : MonoBehaviour
 
         ChangeSpeed();
         ChangeSize();
-
+        ChangeColor();
 
     }
 
     private void OnDestroy()
     {
+        //Buttons
         btnPlay.onClick.RemoveAllListeners();
         btnOptions.onClick.RemoveAllListeners();
         btnMainMenu.onClick.RemoveAllListeners();
         btnBackOptions.onClick.RemoveAllListeners();
 
+        //P1
         sliderPlayer1Speed.onValueChanged.RemoveAllListeners();
         sliderPlayer1Size.onValueChanged.RemoveAllListeners();
         sliderPlayer1ColorR.onValueChanged.RemoveAllListeners();
         sliderPlayer1ColorG.onValueChanged.RemoveAllListeners();
         sliderPlayer1ColorB.onValueChanged.RemoveAllListeners();
 
+        //P2
         sliderPlayer2Speed.onValueChanged.RemoveAllListeners();
         sliderPlayer2Size.onValueChanged.RemoveAllListeners();
         sliderPlayer2ColorR.onValueChanged.RemoveAllListeners();
@@ -202,16 +200,13 @@ public class Panels : MonoBehaviour
 
     public void ChangeColor()
     {
+        
         sliderPlayer1ColorR.onValueChanged.AddListener((red) =>
         {
-            red = player1ColorR.r;
-            //GetComponent<SpriteRenderer>().color = Random.ColorHSV();
-
 
         });
 
 
 
     }
-
 }

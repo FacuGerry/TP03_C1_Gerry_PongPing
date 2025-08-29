@@ -19,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        
-
         playerRigidbody2D = GetComponent<Rigidbody2D>();
 
         size = transform.localScale;

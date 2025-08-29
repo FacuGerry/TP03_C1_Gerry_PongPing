@@ -1,30 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuButtons : MonoBehaviour
 {
-    //[SerializeField] private GameObject init;
     [SerializeField] private Button btnPlay;
-    //[SerializeField] private Button btnOptions;
     [SerializeField] private Button btnCredits;
     [SerializeField] private Button btnExit;
+    [SerializeField] private Button btnBackCredits;
+    [SerializeField] private GameObject init;
+    [SerializeField] private GameObject Credits;
     [SerializeField] private Camera myCamera;
 
-    private Transform myTransCam;
-
     public string Game = "Game";
-    public float camSpeed = 5f;
-    public float camMaxHeight = 11f;
+
+    public float camSpeed = 1f;
+
+    public Vector3 camMaxHeight = new Vector3(0, 11, -10);
+
+    private Transform myTransCam;
 
     private void Awake()
     {
         btnPlay.onClick.AddListener(OnPlayClicked);
-        //btnOptions.onClick.AddListener(OnOptsClicked);
         btnCredits.onClick.AddListener(OnCreditsClicked);
         btnExit.onClick.AddListener(OnExitClicked);
+        btnBackCredits.onClick.AddListener(OnBackCreditsClicked);
 
         myTransCam = myCamera.GetComponent<Transform>();
     }
@@ -32,6 +36,9 @@ public class MainMenuButtons : MonoBehaviour
     private void OnDestroy()
     {
         btnPlay.onClick.RemoveAllListeners();
+        btnCredits.onClick.RemoveAllListeners();
+        btnExit.onClick.RemoveAllListeners();
+        btnBackCredits.onClick.RemoveAllListeners();
     }
 
     public void OnPlayClicked()
@@ -39,28 +46,25 @@ public class MainMenuButtons : MonoBehaviour
         SceneManager.LoadScene(Game);
     }
 
-    //public void OnOptsClicked(){}
-
     public void OnCreditsClicked()
     {
-        bool isMovingDone = false;
-        float camMoving = camSpeed * myTransCam.position.y;
-
-        while (isMovingDone == false)
-        {
-            if (myTransCam.position.y < camMaxHeight)
-            {
-                myTransCam.transform.position = new Vector3(0, camMoving, 0);
-            }
-            else
-            {
-                isMovingDone = true;
-            }
-        }
+        Vector3 destination = new Vector3(0, 11, -10);
+        init.SetActive(false);
+        myTransCam.transform.position = Vector3.Lerp(myTransCam.position, destination, camSpeed);
+        Credits.SetActive(true);
     }
 
     public void OnExitClicked()
     {
         Application.Quit();
+    }
+
+    public void OnBackCreditsClicked()
+    {
+        Vector3 destination = new Vector3(0, 0, -10);
+        Credits.SetActive(false);
+        myTransCam.transform.position = Vector3.Lerp(myTransCam.position, destination, camSpeed);
+        init.SetActive(true);
+
     }
 }
