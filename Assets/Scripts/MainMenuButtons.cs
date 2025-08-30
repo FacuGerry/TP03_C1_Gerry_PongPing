@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,11 +14,16 @@ public class MainMenuButtons : MonoBehaviour
 
     public string Game = "Game";
 
-    public float camSpeed = 1f;
-
-    public Vector3 camMaxHeight = new Vector3(0, 11, -10);
+    public Vector3 destination;
+    public Vector3 source;
 
     private Transform myTransCam;
+    private bool camMoving = false;
+    private float time = 0f;
+    [SerializeField] private float maxTime;
+    public float lerp;
+
+    private bool isCreditsEnabled = false;
 
     private void Awake()
     {
@@ -31,6 +33,26 @@ public class MainMenuButtons : MonoBehaviour
         btnBackCredits.onClick.AddListener(OnBackCreditsClicked);
 
         myTransCam = myCamera.GetComponent<Transform>();
+    }
+
+    private void Update()
+    {
+        if (camMoving)
+        {
+            time += Time.deltaTime;
+            if (time > maxTime)
+            {
+                camMoving = false;
+                time = 0;
+                Credits.SetActive(isCreditsEnabled);
+                init.SetActive(!isCreditsEnabled);
+            }
+            else 
+            {
+                lerp = time / maxTime;
+                myTransCam.transform.position = Vector3.Lerp(source, destination, lerp);
+            }
+        }
     }
 
     private void OnDestroy()
@@ -48,10 +70,11 @@ public class MainMenuButtons : MonoBehaviour
 
     public void OnCreditsClicked()
     {
-        Vector3 destination = new Vector3(0, 11, -10);
+        destination = new Vector3(0, 11, -10);
+        source = new Vector3(0, 0, -10);
         init.SetActive(false);
-        myTransCam.transform.position = Vector3.Lerp(myTransCam.position, destination, camSpeed);
-        Credits.SetActive(true);
+        camMoving = true;
+        isCreditsEnabled = true;
     }
 
     public void OnExitClicked()
@@ -61,10 +84,10 @@ public class MainMenuButtons : MonoBehaviour
 
     public void OnBackCreditsClicked()
     {
-        Vector3 destination = new Vector3(0, 0, -10);
+        destination = new Vector3(0, 0, -10);
+        source = new Vector3(0, 11, -10);
         Credits.SetActive(false);
-        myTransCam.transform.position = Vector3.Lerp(myTransCam.position, destination, camSpeed);
-        init.SetActive(true);
-
+        camMoving = true;
+        isCreditsEnabled = false;
     }
 }

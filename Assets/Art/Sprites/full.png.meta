@@ -3600,7 +3600,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_117
+      name: Obstacle
       rect:
         serializedVersion: 2
         x: 1029
@@ -4503,7 +4503,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_160
+      name: Axe
       rect:
         serializedVersion: 2
         x: 595
@@ -6834,7 +6834,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_271
+      name: PowerUpRed
       rect:
         serializedVersion: 2
         x: 655
@@ -7800,7 +7800,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: full_317
+      name: Shield
       rect:
         serializedVersion: 2
         x: 912
@@ -8440,9 +8440,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Axe: 2541004265110382810
       Handle: 699812522856664527
+      Obstacle: 5431190799253839414
       Player: 1883867802186087156
+      PowerUpRed: -2563931795961614321
       SLIDER: -5685361394268262943
+      Shield: -901613695003821007
       full_0: -4162122909835288923
       full_1: 7028379676450906074
       full_10: 5469438470169829125
@@ -8463,7 +8467,6 @@ TextureImporter:
       full_114: -1952437197408449348
       full_115: -4453427455070878610
       full_116: -394763748867344077
-      full_117: 5431190799253839414
       full_118: 2376857308834998759
       full_119: 4442433460092873819
       full_12: -6998844140798697261
@@ -8509,7 +8512,6 @@ TextureImporter:
       full_158: -5289288416468142454
       full_159: -649929141664931247
       full_16: -6393328199504298630
-      full_160: 2541004265110382810
       full_161: 6389959150384575162
       full_162: -4368585720795166576
       full_163: 6515111988222886267
@@ -8632,7 +8634,6 @@ TextureImporter:
       full_269: -2530841707502960740
       full_27: 4266515045437536742
       full_270: -3263662489725397600
-      full_271: -2563931795961614321
       full_272: -1639100590090611999
       full_273: 4175711869054211435
       full_274: -7759947448130980650
@@ -8683,7 +8684,6 @@ TextureImporter:
       full_314: -6800429223520982913
       full_315: 192036725417561503
       full_316: 4890144730898063622
-      full_317: -901613695003821007
       full_318: 144415641712787627
       full_319: -2254397487569428713
       full_32: 8724884583122505525

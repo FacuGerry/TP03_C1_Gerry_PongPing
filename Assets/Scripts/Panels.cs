@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -65,8 +64,6 @@ public class Panels : MonoBehaviour
     private bool isPause = false;
     private bool isOptions = false;
 
-    float m_Red, m_Green, m_Blue;
-
     private void Awake()
     {
         player1Speed = player1.GetComponent<PlayerMovement>();
@@ -81,6 +78,10 @@ public class Panels : MonoBehaviour
         btnOptions.onClick.AddListener(OnOptionsClicked);
         btnMainMenu.onClick.AddListener(OnMainMenuClicked);
         btnBackOptions.onClick.AddListener(OnBackOptionsClicked);
+
+        ChangeSpeed();
+        ChangeSize();
+        ChangeColor();
     }
 
     private void Update()
@@ -99,11 +100,6 @@ public class Panels : MonoBehaviour
                 }
             }
         }
-
-        ChangeSpeed();
-        ChangeSize();
-        ChangeColor();
-
     }
 
     private void OnDestroy()
@@ -165,48 +161,85 @@ public class Panels : MonoBehaviour
 
     public void ChangeSpeed()
     {
-        sliderPlayer1Speed.onValueChanged.AddListener((speed) =>
-        {
-            player1Speed.speed = speed;
-            textSpeedPlayer1.text = speed.ToString("0");
+        sliderPlayer1Speed.onValueChanged.AddListener(OnSlidePlayer1SpeedChanged);
+        sliderPlayer2Speed.onValueChanged.AddListener(OnSlidePlayer2SpeedChanged);
+    }
 
-        });
-
-        sliderPlayer2Speed.onValueChanged.AddListener((speed) =>
-        {
-            player2Speed.speed = speed;
-            textSpeedPlayer2.text = speed.ToString("0");
-
-        });
-
+    public void OnSlidePlayer1SpeedChanged(float speed)
+    {
+        player1Speed.speed = speed;
+        textSpeedPlayer1.text = speed.ToString("0");
+    }
+    
+    public void OnSlidePlayer2SpeedChanged(float speed)
+    {
+        player2Speed.speed = speed;
+        textSpeedPlayer2.text = speed.ToString("0");
     }
 
     public void ChangeSize()
     {
-        sliderPlayer1Size.onValueChanged.AddListener((size) =>
-        {
-            player1Size.transform.localScale = new Vector3(11, size, 11);
-            textSizePlayer1.text = size.ToString("0");
+        sliderPlayer1Size.onValueChanged.AddListener(OnSlidePlayer1SizeChanged);
+        sliderPlayer2Size.onValueChanged.AddListener(OnSlidePlayer2SizeChanged);
+    }
 
-        });
+    public void OnSlidePlayer1SizeChanged(float size)
+    {
+        player1Size.transform.localScale = new Vector3(11, size, 11);
+        textSizePlayer1.text = size.ToString("0");
+    }
 
-        sliderPlayer2Size.onValueChanged.AddListener((size) =>
-        {
-            player2Size.transform.localScale = new Vector3(11, size, 11);
-            textSizePlayer2.text = size.ToString("0");
-
-        });
+    public void OnSlidePlayer2SizeChanged(float size)
+    {
+        player2Size.transform.localScale = new Vector3(11, size, 11);
+        textSizePlayer2.text = size.ToString("0");
     }
 
     public void ChangeColor()
+    {        
+        //P1
+        sliderPlayer1ColorR.onValueChanged.AddListener(OnSlidePlayer1ColorRChanged);
+        sliderPlayer1ColorG.onValueChanged.AddListener(OnSlidePlayer1ColorGChanged);
+        sliderPlayer1ColorB.onValueChanged.AddListener(OnSlidePlayer1ColorBChanged);
+        //P2
+        sliderPlayer2ColorR.onValueChanged.AddListener(OnSlidePlayer2ColorRChanged);
+        sliderPlayer2ColorG.onValueChanged.AddListener(OnSlidePlayer2ColorGChanged);
+        sliderPlayer2ColorB.onValueChanged.AddListener(OnSlidePlayer2ColorBChanged);
+    }
+
+    public void OnSlidePlayer1ColorRChanged(float red)
     {
-        
-        sliderPlayer1ColorR.onValueChanged.AddListener((red) =>
-        {
+        player1Color.color = new Color(red, player1Color.color.g, player1Color.color.b);
+        textColorPlayer1R.text = (red * 255).ToString("0");
+    }
 
-        });
+    public void OnSlidePlayer1ColorGChanged(float green)
+    {
+        player1Color.color = new Color(player1Color.color.r, green, player1Color.color.b);
+        textColorPlayer1G.text = (green * 255).ToString("0");
+    }
 
+    public void OnSlidePlayer1ColorBChanged(float blue)
+    {
+        player1Color.color = new Color(player1Color.color.r, player1Color.color.g, blue);
+        textColorPlayer1B.text = (blue * 255).ToString("0");
+    }
 
+    public void OnSlidePlayer2ColorRChanged(float red)
+    {
+        player2Color.color = new Color(red, player2Color.color.g, player2Color.color.b);
+        textColorPlayer2R.text = (red * 255).ToString("0");
+    }
 
+    public void OnSlidePlayer2ColorGChanged(float green)
+    {
+        player2Color.color = new Color(player2Color.color.r, green, player2Color.color.b);
+        textColorPlayer2G.text = (green * 255).ToString("0");
+    }
+
+    public void OnSlidePlayer2ColorBChanged(float blue)
+    {
+        player2Color.color = new Color(player2Color.color.r, player2Color.color.g, blue);
+        textColorPlayer2B.text = (blue * 255).ToString("0");
     }
 }

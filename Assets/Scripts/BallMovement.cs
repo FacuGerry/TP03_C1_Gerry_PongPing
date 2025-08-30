@@ -16,7 +16,9 @@ public class BallMovement : MonoBehaviour
     [Header("Ball")]
     [SerializeField] private Rigidbody2D ballRigidbody2D;
     [SerializeField] private GameObject ball;
-    public float ballSpeed = 400f;
+    public float initialBallSpeed = 0.4f;
+    public float currentBallSpeed = 0.4f;
+    public float ballExtraSpeed = 0.01f;
 
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
@@ -39,7 +41,8 @@ public class BallMovement : MonoBehaviour
     private Collider2D p2;
 
     private bool isTiming = false;
-    public float timer = 300f;
+    public float timer = 3f;
+    private float maxTimer = 0f;
 
     private void Awake()
     {
@@ -49,6 +52,9 @@ public class BallMovement : MonoBehaviour
         floorbot = floor.GetComponent<Collider2D>();
         p1 = player1.GetComponent<Collider2D>();
         p2 = player2.GetComponent<Collider2D>();
+
+        currentBallSpeed = initialBallSpeed;
+        maxTimer = timer;
     }
 
     void Start()
@@ -60,6 +66,17 @@ public class BallMovement : MonoBehaviour
     {
         WriteScore();
         OnWin();
+
+        if (isTiming) 
+        { 
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                KickOff();
+                timer = maxTimer;
+                isTiming = false;
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -74,22 +91,22 @@ public class BallMovement : MonoBehaviour
         {
             if (Random.value < 0.5f)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, Random.value);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, Random.value);
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, -Random.value);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -Random.value);
             }
         }
         else
         {
             if (Random.value < 0.5f)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, Random.value);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, Random.value);
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, -Random.value);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -Random.value);
             }
         }
     }
@@ -103,14 +120,14 @@ public class BallMovement : MonoBehaviour
         {
             ball.transform.position = Vector2.zero;
             scorePlayer2++;
-            ballSpeed = 400f;
+            currentBallSpeed = initialBallSpeed;
             Timer();
         }
         if (collision.collider == wallRight)
         {
             ball.transform.position = Vector2.zero;
             scorePlayer1++;
-            ballSpeed = 400f;
+            currentBallSpeed = initialBallSpeed;
             Timer();
         }
 
@@ -118,11 +135,11 @@ public class BallMovement : MonoBehaviour
         {
             if (rigidbody2D.velocity.x > 0)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, -1);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -1);
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, -1);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -1);
             }
         }
 
@@ -130,11 +147,11 @@ public class BallMovement : MonoBehaviour
         {
             if (rigidbody2D.velocity.x > 0)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, 1);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, 1);
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, 1);
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, 1);
             }
         }
 
@@ -142,13 +159,13 @@ public class BallMovement : MonoBehaviour
         {
             if (rigidbody2D.velocity.y > 0)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, 1);
-                ballSpeed += 10;
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, 1);
+                currentBallSpeed += ballExtraSpeed;
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(1, -1);
-                ballSpeed += 10;
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -1);
+                currentBallSpeed += ballExtraSpeed;
             }
         }
 
@@ -156,13 +173,13 @@ public class BallMovement : MonoBehaviour
         {
             if (rigidbody2D.velocity.y > 0)
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, 1);
-                ballSpeed += 10;
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, 1);
+                currentBallSpeed += ballExtraSpeed;
             }
             else
             {
-                rigidbody2D.velocity = Time.deltaTime * ballSpeed * new Vector2(-1, -1);
-                ballSpeed += 10;
+                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -1);
+                currentBallSpeed += ballExtraSpeed;
             }
         }
     }
@@ -194,32 +211,9 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    //Consultar con el profe
     public void Timer()
     {
-        bool auxTimer = false;
-        while (auxTimer == false)
-        {
-            if (isTiming == true)
-            {
-                KickOff();
-                auxTimer = true;
-            }
-            else
-            {
-                if (timer <= 0.0f)
-                {
-                    isTiming = true;
-                }
-                else
-                {
-                    timer -= Time.deltaTime;
-                }
-
-
-            }
-        }
+        ballRigidbody2D.velocity = Vector3.zero;
+        isTiming = true;
     }
-
-
 }
