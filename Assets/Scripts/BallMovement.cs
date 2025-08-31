@@ -27,7 +27,7 @@ public class BallMovement : MonoBehaviour
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
     [SerializeField] private TextMeshProUGUI textScoreP2;
-    public int maxScore = 10;
+    public int maxScore;
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
 
@@ -55,7 +55,6 @@ public class BallMovement : MonoBehaviour
     private Collider2D shieldCollider;
     private Collider2D foodCollider;
 
-    private bool isFooding = false;
     private bool isShield = false;
     private float powerUpsTime = 0f;
 
@@ -68,6 +67,7 @@ public class BallMovement : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
         wallLeft = goalLeft.GetComponent<Collider2D>();
         wallRight = goalRight.GetComponent<Collider2D>();
         rooftop = roof.GetComponent<Collider2D>();
@@ -94,7 +94,6 @@ public class BallMovement : MonoBehaviour
     {
         WriteScore();
         OnWin();
-        //FastBall();
         Shield();
 
         if (isTiming)
@@ -229,14 +228,14 @@ public class BallMovement : MonoBehaviour
 
     public void OnWin()
     {
-        if (scorePlayer1 >= 10 || scorePlayer2 >= 10)
+        if (scorePlayer1 >= maxScore || scorePlayer2 >= maxScore)
         {
             Time.timeScale = 0;
             panelWin.SetActive(true);
             scoreWinP1.text = scorePlayer1.ToString("0");
             scoreWinP2.text = scorePlayer2.ToString("0");
 
-            if (scorePlayer1 >= 10)
+            if (scorePlayer1 >= maxScore)
             {
                 winP1.SetActive(true);
             }
@@ -278,8 +277,8 @@ public class BallMovement : MonoBehaviour
 
     public void OnPlayAgainClicked()
     {
-        Time.timeScale = 1;
         SceneManager.LoadScene("Game");
+        Time.timeScale = 1;
     }
 
     public void OnMainMenuClicked()
@@ -289,7 +288,12 @@ public class BallMovement : MonoBehaviour
 
     public void FastBall()
     {
-        currentBallSpeed -= ballFoodSpeed;
+        if (currentBallSpeed == initialBallSpeed)
+        {}
+        else
+        {
+            currentBallSpeed -= ballFoodSpeed;
+        }
     }
 
     public void Shield()
