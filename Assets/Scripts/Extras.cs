@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Extras : MonoBehaviour
 {
-    [SerializeField] private GameObject axe;
-    [SerializeField] private GameObject shield;
-    [SerializeField] private GameObject food;
-    [SerializeField] private GameObject obstacle;
+    public GameObject axe;
+    public GameObject shield;
+    public GameObject food;
+    public GameObject obstacle;
     [SerializeField] private float firstPowerUp;
     [SerializeField] private float timeBetweenPowers;
     [SerializeField] private float maxPositionX;
@@ -18,10 +18,6 @@ public class Extras : MonoBehaviour
     private Transform foodTrans;
     private Transform obstacleTrans;
 
-    private Collider2D axeCollider;
-    private Collider2D shieldCollider;
-    private Collider2D foodCollider;
-
     private float randX;
     private float randY;
 
@@ -29,9 +25,7 @@ public class Extras : MonoBehaviour
     public float timeFastMax;
     public float superSpeed;
 
-    private BallMovement ballMovement;
-
-    private bool isFooding = false;
+    [SerializeField] private BallMovement ballMovement;
 
     private void Awake()
     {
@@ -43,12 +37,7 @@ public class Extras : MonoBehaviour
         foodTrans = food.GetComponent<Transform>();
         obstacleTrans = obstacle.GetComponent<Transform>();
 
-        axeCollider = axe.GetComponent<Collider2D>();
-        shieldCollider = shield.GetComponent<Collider2D>();
-        foodCollider = food.GetComponent<Collider2D>();
-
         timeFastMax = timeFast;
-
     }
 
     private void Start()
@@ -60,24 +49,6 @@ public class Extras : MonoBehaviour
     private void Update()
     {
         FastBall();
-    }
-
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider == axeCollider)
-        {
-            axe.SetActive(false);
-        }
-        if (collision.collider == shieldCollider)
-        {
-            shield.SetActive(false);
-        }
-        if (collision.collider == foodCollider)
-        {
-            isFooding = true;
-            food.SetActive(false);
-        }
     }
 
     public void ObjectsSpawn()
@@ -119,14 +90,14 @@ public class Extras : MonoBehaviour
 
     public void FastBall()
     {
-        if (isFooding)
+        if (ballMovement.isFooding)
         {
             timeFast -= Time.deltaTime;
             ballMovement.currentBallSpeed += superSpeed;
             if (timeFast < 0)
             {
                 ballMovement.currentBallSpeed -= superSpeed;
-                isFooding = false;
+                ballMovement.isFooding = false;
             }
         }
     }

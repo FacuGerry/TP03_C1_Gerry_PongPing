@@ -1,5 +1,9 @@
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class BallMovement : MonoBehaviour
 {
@@ -28,6 +32,8 @@ public class BallMovement : MonoBehaviour
     public int scorePlayer2 = 0;
 
     [SerializeField] private GameObject panelWin;
+    [SerializeField] private Button playAgain;
+    [SerializeField] private Button mainMenu;
     [SerializeField] private TextMeshProUGUI scoreWinP1;
     [SerializeField] private TextMeshProUGUI scoreWinP2;
     [SerializeField] private GameObject winP1;
@@ -44,6 +50,14 @@ public class BallMovement : MonoBehaviour
     public float timer = 3f;
     private float maxTimer = 0f;
 
+    [SerializeField] private Extras extras;
+
+    private Collider2D axeCollider;
+    private Collider2D shieldCollider;
+    private Collider2D foodCollider;
+
+    public bool isFooding = false;
+
     private void Awake()
     {
         wallLeft = goalLeft.GetComponent<Collider2D>();
@@ -55,6 +69,13 @@ public class BallMovement : MonoBehaviour
 
         currentBallSpeed = initialBallSpeed;
         maxTimer = timer;
+
+        axeCollider = extras.axe.GetComponent<Collider2D>();
+        shieldCollider = extras.shield.GetComponent<Collider2D>();
+        foodCollider = extras.food.GetComponent<Collider2D>();
+
+        playAgain.onClick.AddListener(OnPlayAgainClicked);
+        mainMenu.onClick.AddListener(OnMainMenuClicked);
     }
 
     void Start()
@@ -67,8 +88,8 @@ public class BallMovement : MonoBehaviour
         WriteScore();
         OnWin();
 
-        if (isTiming) 
-        { 
+        if (isTiming)
+        {
             timer -= Time.deltaTime;
             if (timer < 0)
             {
@@ -82,6 +103,13 @@ public class BallMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Collisions(collision);
+        PowerUps(collision);
+    }
+
+    private void OnDestroy()
+    {
+        playAgain.onClick.RemoveAllListeners();
+        mainMenu.onClick.RemoveAllListeners();
     }
 
     public void KickOff()
@@ -113,7 +141,6 @@ public class BallMovement : MonoBehaviour
 
     public void Collisions(Collision2D collision)
     {
-
         Rigidbody2D rigidbody2D = ballRigidbody2D;
 
         if (collision.collider == wallLeft)
@@ -123,6 +150,7 @@ public class BallMovement : MonoBehaviour
             currentBallSpeed = initialBallSpeed;
             Timer();
         }
+
         if (collision.collider == wallRight)
         {
             ball.transform.position = Vector2.zero;
@@ -207,7 +235,6 @@ public class BallMovement : MonoBehaviour
             {
                 winP2.SetActive(true);
             }
-
         }
     }
 
@@ -215,5 +242,35 @@ public class BallMovement : MonoBehaviour
     {
         ballRigidbody2D.velocity = Vector3.zero;
         isTiming = true;
+    }
+
+    public void PowerUps(Collision2D collision)
+    {
+        if (collision.collider == axeCollider)
+        {
+            extras.axe.SetActive(false);
+            Debug.Log("IM BEING TOUCHED");
+        }
+        if (collision.collider == shieldCollider)
+        {
+            extras.shield.SetActive(false);
+            Debug.Log("IM BEING TOUCHED");
+        }
+        if (collision.collider == foodCollider)
+        {
+            isFooding = true;
+            extras.food.SetActive(false);
+            Debug.Log("IM BEING TOUCHED");
+        }
+    }
+
+    public void OnPlayAgainClicked()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void OnMainMenuClicked()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
