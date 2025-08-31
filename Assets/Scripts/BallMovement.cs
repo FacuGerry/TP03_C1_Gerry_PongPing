@@ -52,11 +52,19 @@ public class BallMovement : MonoBehaviour
 
     [SerializeField] private Extras extras;
 
-    private Collider2D axeCollider;
     private Collider2D shieldCollider;
     private Collider2D foodCollider;
 
-    public bool isFooding = false;
+    private bool isFooding = false;
+    private bool isShield = false;
+    private float powerUpsTime = 0f;
+
+    [Header("Power Ups")]
+    public float ballFoodSpeed;
+    public float powerUpsMaxTime;
+    [SerializeField] private GameObject shieldP1;
+    [SerializeField] private GameObject shieldP2;
+
 
     private void Awake()
     {
@@ -70,7 +78,6 @@ public class BallMovement : MonoBehaviour
         currentBallSpeed = initialBallSpeed;
         maxTimer = timer;
 
-        axeCollider = extras.axe.GetComponent<Collider2D>();
         shieldCollider = extras.shield.GetComponent<Collider2D>();
         foodCollider = extras.food.GetComponent<Collider2D>();
 
@@ -87,6 +94,8 @@ public class BallMovement : MonoBehaviour
     {
         WriteScore();
         OnWin();
+        //FastBall();
+        Shield();
 
         if (isTiming)
         {
@@ -246,31 +255,55 @@ public class BallMovement : MonoBehaviour
 
     public void PowerUps(Collision2D collision)
     {
-        if (collision.collider == axeCollider)
-        {
-            extras.axe.SetActive(false);
-            Debug.Log("IM BEING TOUCHED");
-        }
         if (collision.collider == shieldCollider)
         {
             extras.shield.SetActive(false);
-            Debug.Log("IM BEING TOUCHED");
+            isShield = true;
+            if (ballRigidbody2D.velocityX > 0)
+            {
+                shieldP1.SetActive(true);
+            }
+            if (ballRigidbody2D.velocityX < 0)
+            {
+                shieldP2.SetActive(true);
+            }
         }
         if (collision.collider == foodCollider)
         {
-            isFooding = true;
             extras.food.SetActive(false);
-            Debug.Log("IM BEING TOUCHED");
+            currentBallSpeed = currentBallSpeed + ballFoodSpeed;
+            Invoke("FastBall", powerUpsMaxTime);
         }
     }
 
     public void OnPlayAgainClicked()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("Game");
     }
 
     public void OnMainMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void FastBall()
+    {
+        currentBallSpeed -= ballFoodSpeed;
+    }
+
+    public void Shield()
+    {
+        if (isShield)
+        {
+            powerUpsTime += Time.deltaTime;
+            if (powerUpsTime > powerUpsMaxTime)
+            {
+                shieldP1.SetActive(false);
+                shieldP2.SetActive(false);
+                isShield = false;
+                powerUpsTime = 0f;
+            }
+        }
     }
 }

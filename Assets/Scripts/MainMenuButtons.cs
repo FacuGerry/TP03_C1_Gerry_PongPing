@@ -27,6 +27,7 @@ public class MainMenuButtons : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
         btnPlay.onClick.AddListener(OnPlayClicked);
         btnCredits.onClick.AddListener(OnCreditsClicked);
         btnExit.onClick.AddListener(OnExitClicked);
@@ -65,6 +66,7 @@ public class MainMenuButtons : MonoBehaviour
 
     public void OnPlayClicked()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(Game);
     }
 

@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class Extras : MonoBehaviour
 {
-    public GameObject axe;
     public GameObject shield;
     public GameObject food;
     public GameObject obstacle;
-    [SerializeField] private float firstPowerUp;
-    [SerializeField] private float timeBetweenPowers;
+    [SerializeField] private float firstPowerUpSpawn;
+    [SerializeField] private float timeBetweenPowersSpawn;
     [SerializeField] private float maxPositionX;
     [SerializeField] private float maxPositionY;
     private float minPositionX;
     private float minPositionY;
 
-    private Transform axeTrans;
     private Transform shieldTrans;
     private Transform foodTrans;
     private Transform obstacleTrans;
@@ -25,14 +23,11 @@ public class Extras : MonoBehaviour
     public float timeFastMax;
     public float superSpeed;
 
-    [SerializeField] private BallMovement ballMovement;
-
     private void Awake()
     {
         minPositionX = -1 * maxPositionX;
         minPositionY = -1 * maxPositionY;
 
-        axeTrans = axe.GetComponent<Transform>();
         shieldTrans = shield.GetComponent<Transform>();
         foodTrans = food.GetComponent<Transform>();
         obstacleTrans = obstacle.GetComponent<Transform>();
@@ -42,13 +37,8 @@ public class Extras : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("ObjectsSpawn", firstPowerUp, timeBetweenPowers);
-        InvokeRepeating("ObjectsDestroy", firstPowerUp + timeBetweenPowers, timeBetweenPowers);
-    }
-
-    private void Update()
-    {
-        FastBall();
+        InvokeRepeating("ObjectsSpawn", firstPowerUpSpawn, timeBetweenPowersSpawn);
+        InvokeRepeating("ObjectsDestroy", firstPowerUpSpawn + timeBetweenPowersSpawn, timeBetweenPowersSpawn);
     }
 
     public void ObjectsSpawn()
@@ -58,22 +48,17 @@ public class Extras : MonoBehaviour
         randX = Random.Range(minPositionX, maxPositionX);
         randY = Random.Range(minPositionY, maxPositionY);
 
-        if (dice < 0.25f)
-        {
-            axe.SetActive(true);
-            axeTrans.position = new Vector2(randX, randY);
-        }
-        if (dice >= 0.25f && dice < 0.5f)
+        if (dice < 0.33f)
         {
             shield.SetActive(true);
             shieldTrans.position = new Vector2(randX, randY);
         }
-        if (dice >= 0.5f && dice < 0.75f)
+        if (dice >= 0.33f && dice < 0.66f)
         {
             food.SetActive(true);
             foodTrans.position = new Vector2(randX, randY);
         }
-        if (dice >= 0.75f)
+        if (dice >= 0.66f)
         {
             obstacle.SetActive(true);
             obstacleTrans.position = new Vector2(randX, randY);
@@ -82,23 +67,8 @@ public class Extras : MonoBehaviour
 
     public void ObjectsDestroy()
     {
-        axe.SetActive(false);
         shield.SetActive(false);
         food.SetActive(false);
         obstacle.SetActive(false);
-    }
-
-    public void FastBall()
-    {
-        if (ballMovement.isFooding)
-        {
-            timeFast -= Time.deltaTime;
-            ballMovement.currentBallSpeed += superSpeed;
-            if (timeFast < 0)
-            {
-                ballMovement.currentBallSpeed -= superSpeed;
-                ballMovement.isFooding = false;
-            }
-        }
     }
 }

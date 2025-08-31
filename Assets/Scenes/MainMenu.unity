@@ -1373,7 +1373,6 @@ MonoBehaviour:
   Game: Game
   destination: {x: 0, y: 0, z: 0}
   source: {x: 0, y: 0, z: 0}
-  time: 0
   maxTime: 2
   lerp: 0
 --- !u!1001 &1193578172
