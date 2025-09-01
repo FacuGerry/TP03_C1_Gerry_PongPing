@@ -7311,7 +7311,7 @@ PrefabInstance:
       objectReference: {fileID: 315876281}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: maxScore
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: maxTimer
