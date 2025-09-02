@@ -1,9 +1,8 @@
 using TMPro;
-using UnityEditor.SearchService;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class BallMovement : MonoBehaviour
 {
@@ -18,11 +17,11 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private GameObject player2;
 
     [Header("Ball")]
-    [SerializeField] private Rigidbody2D ballRigidbody2D;
     [SerializeField] private GameObject ball;
+    [SerializeField] private Rigidbody2D ballRigidbody2D;
     public float initialBallSpeed = 0.4f;
-    public float currentBallSpeed = 0.4f;
     public float ballExtraSpeed = 0.01f;
+    public float currentBallSpeed;
 
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
@@ -31,6 +30,7 @@ public class BallMovement : MonoBehaviour
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
 
+    [Header("Win Panels")]
     [SerializeField] private GameObject panelWin;
     [SerializeField] private Button playAgain;
     [SerializeField] private Button mainMenu;
@@ -39,50 +39,60 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private GameObject winP1;
     [SerializeField] private GameObject winP2;
 
-    private Collider2D wallLeft;
-    private Collider2D wallRight;
-    private Collider2D rooftop;
-    private Collider2D floorbot;
-    private Collider2D p1;
-    private Collider2D p2;
 
-    private bool isTiming = false;
-    public float timer = 3f;
-    private float maxTimer = 0f;
+    [Header("Kick Off Timer")]
+    public float kickOffTimer = 3f;
+    private float kickOffEndTimer = 0f;
+    private bool kickOffTimerIsTiming = false;
+    public float matchDuration = 20f;
+    [SerializeField] private TextMeshProUGUI matchTime;
 
+    [Header("Power Ups")]
     [SerializeField] private Extras extras;
+    [SerializeField] private GameObject shieldP1;
+    [SerializeField] private GameObject shieldP2;
+    public float powerUpsUsageTime;
+    public float ballFoodSpeed;
+    private float powerUpsDeath = 0f;
+    private bool isShieldUsed = false;
 
+    private Collider2D player1Collider;
+    private Collider2D player2Collider;
+    private Collider2D wallLeftCollider;
+    private Collider2D wallRightCollider;
+    private Collider2D roofCollider;
+    private Collider2D floorCollider;
     private Collider2D shieldCollider;
     private Collider2D foodCollider;
 
-    private bool isShield = false;
-    private float powerUpsTime = 0f;
-
-    [Header("Power Ups")]
-    public float ballFoodSpeed;
-    public float powerUpsMaxTime;
-    [SerializeField] private GameObject shieldP1;
-    [SerializeField] private GameObject shieldP2;
-
+    //Timer for the goals
+    private float goalTimer;
+    private Vector2 ballPosition;
+    private bool isTheMatchOn = false;
 
     private void Awake()
     {
         Time.timeScale = 1;
-        wallLeft = goalLeft.GetComponent<Collider2D>();
-        wallRight = goalRight.GetComponent<Collider2D>();
-        rooftop = roof.GetComponent<Collider2D>();
-        floorbot = floor.GetComponent<Collider2D>();
-        p1 = player1.GetComponent<Collider2D>();
-        p2 = player2.GetComponent<Collider2D>();
 
+        //Collider settlement
+        wallLeftCollider = goalLeft.GetComponent<Collider2D>();
+        wallRightCollider = goalRight.GetComponent<Collider2D>();
+        roofCollider = roof.GetComponent<Collider2D>();
+        floorCollider = floor.GetComponent<Collider2D>();
+        player1Collider = player1.GetComponent<Collider2D>();
+        player2Collider = player2.GetComponent<Collider2D>();
+
+        kickOffEndTimer = kickOffTimer;
         currentBallSpeed = initialBallSpeed;
-        maxTimer = timer;
 
         shieldCollider = extras.shield.GetComponent<Collider2D>();
         foodCollider = extras.food.GetComponent<Collider2D>();
 
         playAgain.onClick.AddListener(OnPlayAgainClicked);
         mainMenu.onClick.AddListener(OnMainMenuClicked);
+
+        ballPosition = ball.GetComponent<Transform>().position;
+        goalTimer = matchDuration;
     }
 
     void Start()
@@ -95,15 +105,17 @@ public class BallMovement : MonoBehaviour
         WriteScore();
         OnWin();
         Shield();
+        TimerForGoals();
 
-        if (isTiming)
+        if (kickOffTimerIsTiming)
         {
-            timer -= Time.deltaTime;
-            if (timer < 0)
+            kickOffTimer -= Time.deltaTime;
+            if (kickOffTimer < 0)
             {
                 KickOff();
-                timer = maxTimer;
-                isTiming = false;
+                kickOffTimer = kickOffEndTimer;
+                kickOffTimerIsTiming = false;
+                isTheMatchOn = true;
             }
         }
     }
@@ -122,100 +134,99 @@ public class BallMovement : MonoBehaviour
 
     public void KickOff()
     {
-        Rigidbody2D rigidbody2D = ballRigidbody2D;
         if (Random.value < 0.5f)
         {
-            if (Random.value < 0.5f)
+            if (Random.value < 0.5f) //UP-RIGHT
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, Random.value);
+                ballRigidbody2D.AddForce(initialBallSpeed * new Vector2(1, Random.value).normalized, ForceMode2D.Impulse);
             }
-            else
+            else //DOWN-RIGHT
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -Random.value);
+                ballRigidbody2D.AddForce(initialBallSpeed * new Vector2(1, -Random.value).normalized, ForceMode2D.Impulse);
             }
         }
         else
         {
-            if (Random.value < 0.5f)
+            if (Random.value < 0.5f) //UP-LEFT
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, Random.value);
+                ballRigidbody2D.AddForce(initialBallSpeed * new Vector2(-1, Random.value).normalized, ForceMode2D.Impulse);
             }
-            else
+            else //DOWN-LEFT
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -Random.value);
+                ballRigidbody2D.AddForce(initialBallSpeed * new Vector2(-1, -Random.value).normalized, ForceMode2D.Impulse);
             }
         }
     }
 
     public void Collisions(Collision2D collision)
     {
-        Rigidbody2D rigidbody2D = ballRigidbody2D;
-
-        if (collision.collider == wallLeft)
+        if (collision.collider == wallLeftCollider)
         {
             ball.transform.position = Vector2.zero;
+            ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer2++;
-            currentBallSpeed = initialBallSpeed;
+            isTheMatchOn = false;
+            matchTime.color = Color.black;
+            goalTimer = matchDuration;
             Timer();
         }
 
-        if (collision.collider == wallRight)
+        if (collision.collider == wallRightCollider)
         {
             ball.transform.position = Vector2.zero;
+            ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer1++;
-            currentBallSpeed = initialBallSpeed;
+            isTheMatchOn = false;
+            matchTime.color = Color.black;
+            goalTimer = matchDuration;
             Timer();
         }
 
-        if (collision.collider == rooftop)
+        if (collision.collider == roofCollider)
         {
-            if (rigidbody2D.velocity.x > 0)
+            if (ballRigidbody2D.velocity.x > 0)
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -1);
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -1);
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
             }
         }
 
-        if (collision.collider == floorbot)
+        if (collision.collider == floorCollider)
         {
-            if (rigidbody2D.velocity.x > 0)
+            if (ballRigidbody2D.velocity.x > 0)
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, 1);
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, 1);
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
             }
         }
 
-        if (collision.collider == p1)
+        if (collision.collider == player1Collider)
         {
-            if (rigidbody2D.velocity.y > 0)
+            if (ballRigidbody2D.velocity.y > 0)
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, 1);
-                currentBallSpeed += ballExtraSpeed;
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(1, -1);
-                currentBallSpeed += ballExtraSpeed;
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
             }
         }
 
-        if (collision.collider == p2)
+        if (collision.collider == player2Collider)
         {
-            if (rigidbody2D.velocity.y > 0)
+            if (ballRigidbody2D.velocity.y > 0)
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, 1);
-                currentBallSpeed += ballExtraSpeed;
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                rigidbody2D.velocity = currentBallSpeed * new Vector2(-1, -1);
-                currentBallSpeed += ballExtraSpeed;
+                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
             }
         }
     }
@@ -249,15 +260,54 @@ public class BallMovement : MonoBehaviour
     public void Timer()
     {
         ballRigidbody2D.velocity = Vector3.zero;
-        isTiming = true;
+        kickOffTimerIsTiming = true;
+    }
+
+    public void TimerForGoals()
+    {
+        matchTime.text = goalTimer.ToString("0");
+        if (isTheMatchOn)
+        {
+            goalTimer -= Time.deltaTime;
+            if (goalTimer < 5.5) //Turns the font to RED when there are 5 secs lasting
+            {
+                matchTime.color = Color.red;
+            }
+        }
+        if (goalTimer < 0)
+        {
+            if (ballPosition.x < 0)
+            {
+                ball.transform.position = Vector2.zero;
+                ballRigidbody2D.velocity = Vector2.zero;
+                scorePlayer2++;
+                Timer();
+            }
+            else
+            {
+                ball.transform.position = Vector2.zero;
+                ballRigidbody2D.velocity = Vector2.zero;
+                scorePlayer1++;
+                Timer();
+            }
+            matchTime.color = Color.black;
+            isTheMatchOn = false;
+            goalTimer = matchDuration;
+        }
     }
 
     public void PowerUps(Collision2D collision)
     {
+        if (collision.collider == foodCollider)
+        {
+            extras.food.SetActive(false);
+            currentBallSpeed += ballFoodSpeed;
+            Invoke("FastBall", powerUpsUsageTime);
+        }
         if (collision.collider == shieldCollider)
         {
             extras.shield.SetActive(false);
-            isShield = true;
+            isShieldUsed = true;
             if (ballRigidbody2D.velocityX > 0)
             {
                 shieldP1.SetActive(true);
@@ -266,12 +316,6 @@ public class BallMovement : MonoBehaviour
             {
                 shieldP2.SetActive(true);
             }
-        }
-        if (collision.collider == foodCollider)
-        {
-            extras.food.SetActive(false);
-            currentBallSpeed = currentBallSpeed + ballFoodSpeed;
-            Invoke("FastBall", powerUpsMaxTime);
         }
     }
 
@@ -289,24 +333,24 @@ public class BallMovement : MonoBehaviour
     public void FastBall()
     {
         if (currentBallSpeed == initialBallSpeed)
-        {}
+        { }
         else
         {
-            currentBallSpeed -= ballFoodSpeed;
+            ballRigidbody2D.AddForce(new Vector2(ballExtraSpeed, ballExtraSpeed).normalized, ForceMode2D.Impulse);
         }
     }
 
     public void Shield()
     {
-        if (isShield)
+        if (isShieldUsed)
         {
-            powerUpsTime += Time.deltaTime;
-            if (powerUpsTime > powerUpsMaxTime)
+            powerUpsDeath += Time.deltaTime;
+            if (powerUpsDeath > powerUpsUsageTime)
             {
                 shieldP1.SetActive(false);
                 shieldP2.SetActive(false);
-                isShield = false;
-                powerUpsTime = 0f;
+                isShieldUsed = false;
+                powerUpsDeath = 0f;
             }
         }
     }
