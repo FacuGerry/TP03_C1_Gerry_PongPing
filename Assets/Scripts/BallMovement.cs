@@ -1,8 +1,8 @@
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class BallMovement : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private GameObject ball;
     [SerializeField] private Rigidbody2D ballRigidbody2D;
     public float initialBallSpeed = 0.4f;
-    public float ballExtraSpeed = 0.01f;
+    public float ballCollisionSpeed = 0.01f;
     public float currentBallSpeed;
 
     [Header("Score settings")]
@@ -186,11 +186,11 @@ public class BallMovement : MonoBehaviour
         {
             if (ballRigidbody2D.velocity.x > 0)
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
             }
         }
 
@@ -198,11 +198,11 @@ public class BallMovement : MonoBehaviour
         {
             if (ballRigidbody2D.velocity.x > 0)
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
             }
         }
 
@@ -210,11 +210,11 @@ public class BallMovement : MonoBehaviour
         {
             if (ballRigidbody2D.velocity.y > 0)
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(1, -1).normalized, ForceMode2D.Impulse);
             }
         }
 
@@ -222,11 +222,11 @@ public class BallMovement : MonoBehaviour
         {
             if (ballRigidbody2D.velocity.y > 0)
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(-1, 1).normalized, ForceMode2D.Impulse);
             }
             else
             {
-                ballRigidbody2D.AddForce(ballExtraSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
+                ballRigidbody2D.AddForce(ballCollisionSpeed * new Vector2(-1, -1).normalized, ForceMode2D.Impulse);
             }
         }
     }
@@ -301,7 +301,7 @@ public class BallMovement : MonoBehaviour
         if (collision.collider == foodCollider)
         {
             extras.food.SetActive(false);
-            currentBallSpeed += ballFoodSpeed;
+            ballRigidbody2D.AddForce(new Vector2(ballFoodSpeed, ballFoodSpeed).normalized, ForceMode2D.Impulse);
             Invoke("FastBall", powerUpsUsageTime);
         }
         if (collision.collider == shieldCollider)
@@ -336,7 +336,7 @@ public class BallMovement : MonoBehaviour
         { }
         else
         {
-            ballRigidbody2D.AddForce(new Vector2(ballExtraSpeed, ballExtraSpeed).normalized, ForceMode2D.Impulse);
+            ballRigidbody2D.velocity -= new Vector2(ballFoodSpeed, ballFoodSpeed);
         }
     }
 

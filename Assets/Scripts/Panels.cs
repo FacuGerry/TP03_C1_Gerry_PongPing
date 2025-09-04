@@ -13,6 +13,8 @@ public class Panels : MonoBehaviour
 
     private SpriteRenderer player1Color;
     private SpriteRenderer player2Color;
+    private PlayerMovement player1ColorSaved;
+    private PlayerMovement player2ColorSaved;
 
     [Header("Players")]
     [SerializeField] private GameObject player1;

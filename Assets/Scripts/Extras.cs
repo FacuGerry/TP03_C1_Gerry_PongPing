@@ -21,7 +21,6 @@ public class Extras : MonoBehaviour
 
     private float timeFast;
     public float timeFastMax;
-    public float superSpeed;
 
     private void Awake()
     {
