@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Rigidbody")]
     [SerializeField] private Rigidbody2D playerRigidbody2D;
-    [SerializeField] private Collider2D playerCollider;
 
     [Header("Player statistics")]
     public float speed = 10f;
@@ -22,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject wallRight;
     [SerializeField] private GameObject wallMiddle;
     [SerializeField] private GameObject ball;
+    [SerializeField] private BallMovement ballMovement;
+    [SerializeField] private BallMovement shield;
+    [SerializeField] private BallMovement food;
 
     private Collider2D floorCollider;
     private Collider2D roofCollider;
@@ -71,31 +73,24 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    public void OnCollisionEnter2D(Collision2D collision2D)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision2D.collider == wallLCollider
-            || collision2D.collider == wallRCollider
-            || collision2D.collider == wallMCollider
-            || collision2D.collider == floorCollider
-            || collision2D.collider == roofCollider)
+        ColorCollisions(collision);
+    }
+
+    public void ColorCollisions(Collision2D collision)
+    {
+        if (collision.collider == wallLCollider
+        || collision.collider == wallRCollider
+        || collision.collider == wallMCollider
+        || collision.collider == floorCollider
+        || collision.collider == roofCollider)
         {
             playerColor.color = new Color(0, 0, 0, 1);
         }
-        if (collision2D.collider == ballCollider)
+        if (collision.collider == ballCollider)
         {
-           playerColor.color = new Color(Random.value, Random.value, Random.value, 1);
+            playerColor.color = new Color(Random.value, Random.value, Random.value, 1);
         }
     }
-
-    //public void OnCollisionExit2D(Collision2D collision2D)
-    //{
-    //    if (collision2D.collider == wallLCollider
-    //        || collision2D.collider == wallRCollider
-    //        || collision2D.collider == wallMCollider
-    //        || collision2D.collider == floorCollider
-    //        || collision2D.collider == roofCollider)
-    //    {
-    //        playerColor.color = new Color(Random.value, Random.value, Random.value, 1);
-    //    }
-    //}
 }

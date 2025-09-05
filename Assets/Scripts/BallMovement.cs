@@ -17,7 +17,6 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private GameObject player2;
 
     [Header("Ball")]
-    [SerializeField] private GameObject ball;
     [SerializeField] private Rigidbody2D ballRigidbody2D;
     public float initialBallSpeed = 0.4f;
     public float ballCollisionSpeed = 0.01f;
@@ -88,7 +87,7 @@ public class BallMovement : MonoBehaviour
         playAgain.onClick.AddListener(OnPlayAgainClicked);
         mainMenu.onClick.AddListener(OnMainMenuClicked);
 
-        ballPosition = ball.GetComponent<Transform>().position;
+        ballPosition = gameObject.GetComponent<Transform>().position;
         goalsToWin = gameSettings.goalsToWin;
         gameDuration = gameSettings.gameDuration;
         kickOffTime = gameSettings.kickOffTime;
@@ -150,7 +149,7 @@ public class BallMovement : MonoBehaviour
     {
         if (collision.collider == wallLeftCollider)
         {
-            ball.transform.position = Vector2.zero;
+            gameObject.transform.position = Vector2.zero;
             ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer2++;
             isTheMatchOn = false;
@@ -160,7 +159,7 @@ public class BallMovement : MonoBehaviour
 
         if (collision.collider == wallRightCollider)
         {
-            ball.transform.position = Vector2.zero;
+            gameObject.transform.position = Vector2.zero;
             ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer1++;
             isTheMatchOn = false;
@@ -280,14 +279,14 @@ public class BallMovement : MonoBehaviour
         {
             if (ballPosition.x < 0)
             {
-                ball.transform.position = Vector2.zero;
+                gameObject.transform.position = Vector2.zero;
                 ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer2++;
                 TimerForKickOffSetting();
             }
             else
             {
-                ball.transform.position = Vector2.zero;
+                gameObject.transform.position = Vector2.zero;
                 ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer1++;
                 TimerForKickOffSetting();
@@ -313,7 +312,7 @@ public class BallMovement : MonoBehaviour
             {
                 shieldP1.SetActive(true);
             }
-            if (ballRigidbody2D.velocityX < 0)
+            else if (ballRigidbody2D.velocityX < 0)
             {
                 shieldP2.SetActive(true);
             }
