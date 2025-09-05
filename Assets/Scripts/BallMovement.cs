@@ -20,7 +20,6 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D ballRigidbody2D;
     public float initialBallSpeed = 0.4f;
     public float ballCollisionSpeed = 0.01f;
-    public float currentBallSpeed;
 
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
@@ -78,8 +77,6 @@ public class BallMovement : MonoBehaviour
         floorCollider = floor.GetComponent<Collider2D>();
         player1Collider = player1.GetComponent<Collider2D>();
         player2Collider = player2.GetComponent<Collider2D>();
-
-        currentBallSpeed = initialBallSpeed;
 
         shieldCollider = extras.shield.GetComponent<Collider2D>();
         foodCollider = extras.food.GetComponent<Collider2D>();
@@ -149,8 +146,8 @@ public class BallMovement : MonoBehaviour
     {
         if (collision.collider == wallLeftCollider)
         {
+            ballRigidbody2D.velocity = new Vector2(0, 0);
             gameObject.transform.position = Vector2.zero;
-            ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer2++;
             isTheMatchOn = false;
             matchTime.color = Color.black;
@@ -159,8 +156,8 @@ public class BallMovement : MonoBehaviour
 
         if (collision.collider == wallRightCollider)
         {
+            ballRigidbody2D.velocity = new Vector2(0, 0);
             gameObject.transform.position = Vector2.zero;
-            ballRigidbody2D.velocity = Vector2.zero;
             scorePlayer1++;
             isTheMatchOn = false;
             matchTime.color = Color.black;
@@ -245,7 +242,7 @@ public class BallMovement : MonoBehaviour
     public void TimerForKickOffSetting()
     {
         gameDuration = gameSettings.gameDuration;
-        ballRigidbody2D.velocity = Vector2.zero;
+        ballRigidbody2D.velocity = new Vector2(0, 0);
         kickOffTimerIsTiming = true;
     }
 
@@ -279,15 +276,15 @@ public class BallMovement : MonoBehaviour
         {
             if (ballPosition.x < 0)
             {
+                ballRigidbody2D.velocity = new Vector2(0, 0);
                 gameObject.transform.position = Vector2.zero;
-                ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer2++;
                 TimerForKickOffSetting();
             }
             else
             {
+                ballRigidbody2D.velocity = new Vector2(0, 0);
                 gameObject.transform.position = Vector2.zero;
-                ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer1++;
                 TimerForKickOffSetting();
             }
@@ -301,8 +298,7 @@ public class BallMovement : MonoBehaviour
         if (collision.collider == foodCollider)
         {
             extras.food.SetActive(false);
-            ballRigidbody2D.AddForce(new Vector2(ballFoodSpeed, ballFoodSpeed).normalized, ForceMode2D.Impulse);
-            Invoke("FastBall", powerUpsUsageTime);
+            ballRigidbody2D.velocity = new Vector2(ballRigidbody2D.velocity.x + ballFoodSpeed, ballRigidbody2D.velocity.y + ballFoodSpeed);
         }
         if (collision.collider == shieldCollider)
         {
@@ -328,16 +324,6 @@ public class BallMovement : MonoBehaviour
     public void OnMainMenuClicked()
     {
         SceneManager.LoadScene("MainMenu");
-    }
-
-    public void FastBall()
-    {
-        if (currentBallSpeed == initialBallSpeed)
-        { }
-        else
-        {
-            ballRigidbody2D.velocity -= new Vector2(ballFoodSpeed, ballFoodSpeed);
-        }
     }
 
     public void Shield()

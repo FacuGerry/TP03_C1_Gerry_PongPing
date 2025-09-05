@@ -5271,6 +5271,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: m_LinearDrag
       value: 7
       objectReference: {fileID: 0}
@@ -7831,6 +7835,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -6988890948716010474, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
+      propertyPath: m_Mass
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -6988890948716010474, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
@@ -7972,7 +7980,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 9bd37da7ef445dc4cbc0a37a1758b44b, type: 2}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: ballFoodSpeed
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: ballExtraSpeed
@@ -8004,7 +8012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6014008740248557740, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: ballCollisionSpeed
-      value: 1.1
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 8021157923789893037, guid: 42009ad7b14eb4c4da730ba8d3f912ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8160,17 +8168,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerLeft
       objectReference: {fileID: 0}
-    - target: {fileID: 1434440134709715280, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
-      propertyPath: m_LinearDrag
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
-      propertyPath: m_Constraints
-      value: 4
+      propertyPath: m_Mass
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: ball
@@ -8184,14 +8184,6 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1477622445}
-    - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
-      propertyPath: speed
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
-      propertyPath: panels
-      value: 
-      objectReference: {fileID: 848288754}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: wallLeft
       value: 
