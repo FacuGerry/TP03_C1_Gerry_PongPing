@@ -6,9 +6,5 @@ public class GameSettingsSO : ScriptableObject
     [Header("Game Settings")]
     public int goalsToWin = 3;
     public float gameDuration = 20f;
-
-    [Header("Power Ups Spawn")]
-    public string prefabName;
-    public int numberOfPrefabsToCreate;
-    public Vector2[] spawnPoints;
+    public float kickOffTime = 3f;
 }

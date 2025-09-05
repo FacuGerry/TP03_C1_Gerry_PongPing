@@ -26,7 +26,6 @@ public class BallMovement : MonoBehaviour
     [Header("Score settings")]
     [SerializeField] private TextMeshProUGUI textScoreP1;
     [SerializeField] private TextMeshProUGUI textScoreP2;
-    public int maxScore;
     public int scorePlayer1 = 0;
     public int scorePlayer2 = 0;
 
@@ -39,12 +38,8 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private GameObject winP1;
     [SerializeField] private GameObject winP2;
 
-
     [Header("Kick Off Timer")]
-    public float kickOffTimer = 3f;
-    private float kickOffEndTimer = 0f;
     private bool kickOffTimerIsTiming = false;
-    public float matchDuration = 20f;
     [SerializeField] private TextMeshProUGUI matchTime;
 
     [Header("Power Ups")]
@@ -65,10 +60,13 @@ public class BallMovement : MonoBehaviour
     private Collider2D shieldCollider;
     private Collider2D foodCollider;
 
-    //Timer for the goals
-    private float goalTimer;
     private Vector2 ballPosition;
     private bool isTheMatchOn = false;
+
+    public GameSettingsSO gameSettings;
+    private float goalsToWin;
+    private float gameDuration;
+    private float kickOffTime;
 
     private void Awake()
     {
@@ -82,7 +80,6 @@ public class BallMovement : MonoBehaviour
         player1Collider = player1.GetComponent<Collider2D>();
         player2Collider = player2.GetComponent<Collider2D>();
 
-        kickOffEndTimer = kickOffTimer;
         currentBallSpeed = initialBallSpeed;
 
         shieldCollider = extras.shield.GetComponent<Collider2D>();
@@ -92,12 +89,14 @@ public class BallMovement : MonoBehaviour
         mainMenu.onClick.AddListener(OnMainMenuClicked);
 
         ballPosition = ball.GetComponent<Transform>().position;
-        goalTimer = matchDuration;
+        goalsToWin = gameSettings.goalsToWin;
+        gameDuration = gameSettings.gameDuration;
+        kickOffTime = gameSettings.kickOffTime;
     }
 
     void Start()
     {
-        Timer();
+        TimerForKickOffSetting();
     }
 
     private void Update()
@@ -106,18 +105,7 @@ public class BallMovement : MonoBehaviour
         OnWin();
         Shield();
         TimerForGoals();
-
-        if (kickOffTimerIsTiming)
-        {
-            kickOffTimer -= Time.deltaTime;
-            if (kickOffTimer < 0)
-            {
-                KickOff();
-                kickOffTimer = kickOffEndTimer;
-                kickOffTimerIsTiming = false;
-                isTheMatchOn = true;
-            }
-        }
+        TimerForKickOff();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -167,8 +155,7 @@ public class BallMovement : MonoBehaviour
             scorePlayer2++;
             isTheMatchOn = false;
             matchTime.color = Color.black;
-            goalTimer = matchDuration;
-            Timer();
+            TimerForKickOffSetting();
         }
 
         if (collision.collider == wallRightCollider)
@@ -178,8 +165,7 @@ public class BallMovement : MonoBehaviour
             scorePlayer1++;
             isTheMatchOn = false;
             matchTime.color = Color.black;
-            goalTimer = matchDuration;
-            Timer();
+            TimerForKickOffSetting();
         }
 
         if (collision.collider == roofCollider)
@@ -239,14 +225,14 @@ public class BallMovement : MonoBehaviour
 
     public void OnWin()
     {
-        if (scorePlayer1 >= maxScore || scorePlayer2 >= maxScore)
+        if (scorePlayer1 >= goalsToWin || scorePlayer2 >= goalsToWin)
         {
             Time.timeScale = 0;
             panelWin.SetActive(true);
             scoreWinP1.text = scorePlayer1.ToString("0");
             scoreWinP2.text = scorePlayer2.ToString("0");
 
-            if (scorePlayer1 >= maxScore)
+            if (scorePlayer1 >= goalsToWin)
             {
                 winP1.SetActive(true);
             }
@@ -257,42 +243,57 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-    public void Timer()
+    public void TimerForKickOffSetting()
     {
-        ballRigidbody2D.velocity = Vector3.zero;
+        gameDuration = gameSettings.gameDuration;
+        ballRigidbody2D.velocity = Vector2.zero;
         kickOffTimerIsTiming = true;
+    }
+
+    public void TimerForKickOff()
+    {
+        if (kickOffTimerIsTiming)
+        {
+            kickOffTime -= Time.deltaTime;
+            if (kickOffTime < 0)
+            {
+                KickOff();
+                kickOffTime = gameSettings.kickOffTime;
+                kickOffTimerIsTiming = false;
+                isTheMatchOn = true;
+            }
+        }
     }
 
     public void TimerForGoals()
     {
-        matchTime.text = goalTimer.ToString("0");
+        matchTime.text = gameDuration.ToString("0");
         if (isTheMatchOn)
         {
-            goalTimer -= Time.deltaTime;
-            if (goalTimer < 5.5) //Turns the font to RED when there are 5 secs lasting
+            gameDuration -= Time.deltaTime;
+            if (gameDuration < 5.5) //Turns the font to RED when there are 5 secs lasting
             {
                 matchTime.color = Color.red;
             }
         }
-        if (goalTimer < 0)
+        if (gameDuration < 0)
         {
             if (ballPosition.x < 0)
             {
                 ball.transform.position = Vector2.zero;
                 ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer2++;
-                Timer();
+                TimerForKickOffSetting();
             }
             else
             {
                 ball.transform.position = Vector2.zero;
                 ballRigidbody2D.velocity = Vector2.zero;
                 scorePlayer1++;
-                Timer();
+                TimerForKickOffSetting();
             }
             matchTime.color = Color.black;
             isTheMatchOn = false;
-            goalTimer = matchDuration;
         }
     }
 
