@@ -5272,7 +5272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: m_LinearDrag
@@ -5300,7 +5300,7 @@ PrefabInstance:
       objectReference: {fileID: 1477622445}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: speed
-      value: 2000
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: GoDown
@@ -8170,7 +8170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628012507425584140, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: ball
@@ -8184,6 +8184,10 @@ PrefabInstance:
       propertyPath: floor
       value: 
       objectReference: {fileID: 1477622445}
+    - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
+      propertyPath: speed
+      value: 3000
+      objectReference: {fileID: 0}
     - target: {fileID: 6875763986629462652, guid: 08171b008f715ce4190011c6c40055b2, type: 3}
       propertyPath: wallLeft
       value: 
